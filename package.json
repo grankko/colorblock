@@ -1,0 +1,27 @@
+{
+  "name": "colorblock",
+  "version": "1.0.0",
+  "description": "web3 colorblocks",
+  "directories": {
+    "test": "test"
+  },
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "dev": "lite-server --baseDir=\"dist\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grankko/colorblock.git"
+  },
+  "author": "grankko",
+  "devDependencies": {
+    "lite-server": "^2.6.1",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0"
+  },
+  "dependencies": {
+    "web3": "^1.3.6"
+  }
+}
