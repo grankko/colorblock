@@ -8,8 +8,8 @@ contract TestColorBlock {
     ColorBlock colorBlock = ColorBlock(DeployedAddresses.ColorBlock());
 
     function testUserCanAssignPixel() public {
-        bytes3 firstColor = hex"00";
-        bytes3 secondColor = hex"01";
+        bytes3 firstColor = hex"ffffff";
+        bytes3 secondColor = hex"ff0000";
 
         colorBlock.assignPixel(0, 0, firstColor);
         colorBlock.assignPixel(0, 1, secondColor);

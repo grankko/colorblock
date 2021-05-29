@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="style/site.css" rel="stylesheet" />
 </head>
 <body>
-    meh
+    <div class="top">
+
+    </div>
+    <div class="colorgrid">
+        <div id="colorgridContainer">
+        </div>
+    </div>
+    <div class="bottom">
+
+    </div>    
+    <!--todos: 
+        can't run webpack if web3 or @truffle/contract is imported in index.js
+        remove jquery
+     -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>    
+    <script type="text/javascript" src="web3.min.js"></script>
+    <script type="text/javascript" src="truffle-contract.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

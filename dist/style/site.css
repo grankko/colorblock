@@ -1,0 +1,45 @@
+body, html
+{
+    margin: 0;
+    padding: 0;
+    height: 100vh;    
+}
+
+.top
+{
+    height: 5vh;
+}
+
+.colorgrid
+{
+    height: 45vh;
+    padding: 1em;
+}
+
+.bottom
+{
+    height: 50vh;
+}
+
+:root
+{
+    --grid-cols: 1;
+    --grid-rows: 1;
+}
+  
+#colorgridContainer
+{
+    width: fit-content;
+    display: grid;
+    grid-gap: 1em;
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+}
+  
+.cell
+{
+    width: 5em;
+    height: 5em;
+    border: 1px solid #999;
+    text-align: center;
+}
