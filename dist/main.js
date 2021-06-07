@@ -23,8 +23,33 @@ App = {
         App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
       }
       web3 = new Web3(App.web3Provider);
-  
+      App.initBuyButton();
       return App.initContract();
+    },
+
+    initBuyButton: function() {
+      var buyButton = document.getElementById('buyPixelButton');
+      buyButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        var colorBlockInstance;
+        web3.eth.getAccounts(function(error, accounts) {
+          if (error) {
+            console.log(error);
+          }
+          var account = accounts[0];
+          App.contracts.ColorBlock.deployed().then(function(instance) {
+            colorBlockInstance = instance;
+            var newColor = document.getElementById('pixelColorTextBox').value;
+            return colorBlockInstance.assignPixel(buyButton.dataset.x, buyButton.dataset.y, newColor, {from: account});  // todo: pick and convert color to byte3
+          }).then(function(result) {
+            //todo: update ui
+            console.log(result);
+          }).catch(function(err) {
+            console.log(err.message);
+          });
+        })
+      });
     },
   
     initContract: function() {
@@ -56,6 +81,7 @@ App = {
           let y = pixels[0][i];
           let owner = pixels[2][i];
           let color = pixels[3][i];
+          color = '#' + color.substr(2,6);
 
           let cell = document.createElement("div");
           cell.style.setProperty('background-color', color);
@@ -68,27 +94,14 @@ App = {
 
             var cellX = parseInt($(event.target).data('x'));
             var cellY = parseInt($(event.target).data('y'));
-            var color = parseInt($(event.target).data('color')); 
-        
-            // todo: transaction should not be triggered now, only for testing
-            //       should open details view to select color, review owner etc.
-            var colorBlockInstance;
-            web3.eth.getAccounts(function(error, accounts) {
-              if (error) {
-                console.log(error);
-              }
-              var account = accounts[0];
-              App.contracts.ColorBlock.deployed().then(function(instance) {
-                colorBlockInstance = instance;
-                return colorBlockInstance.assignPixel(cellX, cellY, "0x01", {from: account});  // todo: pick and convert color to byte3
-              }).then(function(result) {
-                //todo: update ui
-                console.log(result);
-              }).catch(function(err) {
-                console.log(err.message);
-              });
-            })
+            var color = event.target.dataset.color;
+            var owner = cell.dataset.owner;
 
+            document.getElementById('ownerTextBox').value = owner;
+            document.getElementById('pixelColorTextBox').value = color;
+            var buyButton = document.getElementById('buyPixelButton');
+            buyButton.dataset.x = cellX;
+            buyButton.dataset.y = cellY;
           });
           container.appendChild(cell).className = "cell";
         }
