@@ -105,7 +105,7 @@ class App {
             document.getElementById('ownerTextBox').value = owner;
             document.getElementById('pixelColorTextBox').value = color;
             var buyButton = document.getElementById('buyPixelButton');
-            buyButton.dataset.pixelIndex = pixelIndex;
+            buyButton.dataset.pixelIndex = cellIndex;
           });
           container.appendChild(cell).className = "cell";
         }
