@@ -1,32 +1,38 @@
+import Web3 from 'web3';
+import TruffleContract from '@truffle/contract';
+
 // todo: make work, then refactor out in classes
-App = {
-    web3Provider: null,
-    contracts: {},
+class App {
+  constructor() {
+    this.web3Provider = null;
+    this.contracts = {};
+  }
   
-    init: async function() {
-      return await App.initWeb3();
-    },
+    async init() {
+      return await this.initWeb3();
+    }
   
-    initWeb3: async function() {
+    async initWeb3() {
       if (window.ethereum) {
-        App.web3Provider = window.ethereum;
+        this.web3Provider = window.ethereum;
         try {
           await window.ethereum.enable();
         } catch (error) {
           console.error("User denied account access");
         }
       } else if (window.web3) {
-        App.web3Provider = window.web3.currentProvider;
+        this.web3Provider = window.web3.currentProvider;
       } else {
-        App.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
+        this.web3Provider = new Web3.providers.HttpProvider('http://localhost:7545');
       }
-      web3 = new Web3(App.web3Provider);
-      App.initBuyButton();
-      return App.initContract();
-    },
+      web3 = new Web3(this.web3Provider);
+      this.initBuyButton();
+      return this.initContract();
+    }
 
-    initBuyButton: function() {
+    initBuyButton() {
       var buyButton = document.getElementById('buyPixelButton');
+      var me = this;
       buyButton.addEventListener("click", function(event) {
         event.preventDefault();
 
@@ -38,12 +44,12 @@ App = {
             console.log(error);
           }
           var account = accounts[0];
-          App.contracts.ColorBlock.deployed().then(function(instance) {
+          me.contracts.ColorBlock.deployed().then(function(instance) {
             colorBlockInstance = instance;
             var newColor = document.getElementById('pixelColorTextBox').value.replace("#", "0x");
             return colorBlockInstance.assignPixel(buyButton.dataset.pixelIndex, newColor, {from: account});
           }).then(function(result) {
-            App.drawPixels();
+            me.drawPixels();
             buyButton.disabled = false;
             console.log(result);
           }).catch(function(err) {
@@ -52,22 +58,22 @@ App = {
           });
         })
       });
-    },
+    }
   
-    initContract: function() {
-      $.getJSON('ColorBlock.json', function(data) {
+    initContract() {
+      fetch('ColorBlock.json').then(res => res.json()).then(data => {
         var ColorBlockArtifact = data;
-        App.contracts.ColorBlock = TruffleContract(ColorBlockArtifact);
-        App.contracts.ColorBlock.setProvider(App.web3Provider);
+        this.contracts.ColorBlock = TruffleContract(ColorBlockArtifact);
+        this.contracts.ColorBlock.setProvider(this.web3Provider);
   
-        return App.drawPixels();
+        return this.drawPixels();
       });
-    },
+    }
 
-    drawPixels: function() {
+    drawPixels() {
       var colorBlockInstance;
   
-      App.contracts.ColorBlock.deployed().then(function(instance) {
+      this.contracts.ColorBlock.deployed().then(function(instance) {
         colorBlockInstance = instance;
         return colorBlockInstance.getPixels.call();
       }).then(function(pixels) {
@@ -92,7 +98,7 @@ App = {
           cell.addEventListener("click", function(event) {
             event.preventDefault();
 
-            var cellIndex = parseInt($(event.target).data('pixelIndex'));
+            var cellIndex = event.target.dataset.pixelIndex;
             var color = event.target.dataset.color;
             var owner = cell.dataset.owner;
 
@@ -110,9 +116,7 @@ App = {
     }
 }
 
-  $(function() {
-    $(window).load(function() {
-      App.init();
-    });
-  });
-  
+document.addEventListener('DOMContentLoaded', function () { 
+  var app = new App();
+  app.init();
+});

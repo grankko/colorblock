@@ -7,7 +7,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode development",
     "dev": "lite-server --baseDir=\"dist\""
   },
   "repository": {
@@ -17,11 +17,11 @@
   "author": "grankko",
   "devDependencies": {
     "lite-server": "^2.6.1",
-    "webpack": "^5.38.1",
+    "webpack": "4.X.X",
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
-    "@truffle/contract": "^4.3.18",
-    "web3": "^1.3.6"
+    "web3": "^1.3.6",
+    "@truffle/contract": "^4.3.18"
   }
 }
