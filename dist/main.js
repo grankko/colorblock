@@ -32,6 +32,8 @@ App = {
       buyButton.addEventListener("click", function(event) {
         event.preventDefault();
 
+        buyButton.disabled = true;
+
         var colorBlockInstance;
         web3.eth.getAccounts(function(error, accounts) {
           if (error) {
@@ -40,12 +42,14 @@ App = {
           var account = accounts[0];
           App.contracts.ColorBlock.deployed().then(function(instance) {
             colorBlockInstance = instance;
-            var newColor = document.getElementById('pixelColorTextBox').value;
-            return colorBlockInstance.assignPixel(buyButton.dataset.x, buyButton.dataset.y, newColor, {from: account});  // todo: pick and convert color to byte3
+            var newColor = document.getElementById('pixelColorTextBox').value.replace("#", "0x");
+            return colorBlockInstance.assignPixel(buyButton.dataset.pixelIndex, newColor, {from: account});
           }).then(function(result) {
-            //todo: update ui
+            App.drawPixels();
+            buyButton.disabled = false;
             console.log(result);
           }).catch(function(err) {
+            buyButton.disabled = false;
             console.log(err.message);
           });
         })
@@ -72,36 +76,32 @@ App = {
         
         let rows = Math.sqrt(pixels[0].length);
         let container = document.getElementById('colorgridContainer');
+        container.innerHTML = '';
         container.style.setProperty('--grid-rows', rows);
         container.style.setProperty('--grid-cols', rows);
 
-        // todo: x & y is inverted maybe?
         for (var i = 0; i < pixels[0].length; i++) {
-          let x = pixels[1][i];
-          let y = pixels[0][i];
-          let owner = pixels[2][i];
-          let color = pixels[3][i];
+          let pixelIndex = web3.utils.BN(pixels[0][i]).toNumber();
+          let owner = pixels[1][i];
+          let color = pixels[2][i];
           color = '#' + color.substr(2,6);
 
           let cell = document.createElement("div");
           cell.style.setProperty('background-color', color);
           cell.dataset.owner = owner;
-          cell.dataset.x = x;
-          cell.dataset.y = y;
+          cell.dataset.pixelIndex = pixelIndex;
           cell.dataset.color = color;
           cell.addEventListener("click", function(event) {
             event.preventDefault();
 
-            var cellX = parseInt($(event.target).data('x'));
-            var cellY = parseInt($(event.target).data('y'));
+            var cellIndex = parseInt($(event.target).data('pixelIndex'));
             var color = event.target.dataset.color;
             var owner = cell.dataset.owner;
 
             document.getElementById('ownerTextBox').value = owner;
             document.getElementById('pixelColorTextBox').value = color;
             var buyButton = document.getElementById('buyPixelButton');
-            buyButton.dataset.x = cellX;
-            buyButton.dataset.y = cellY;
+            buyButton.dataset.pixelIndex = pixelIndex;
           });
           container.appendChild(cell).className = "cell";
         }

@@ -11,18 +11,19 @@ contract TestColorBlock {
         bytes3 firstColor = hex"ffffff";
         bytes3 secondColor = hex"ff0000";
 
-        colorBlock.assignPixel(0, 0, firstColor);
-        colorBlock.assignPixel(0, 1, secondColor);
+        colorBlock.assignPixel(0, firstColor);
+        colorBlock.assignPixel(1, secondColor);
     }
 
     function testUserGetAllPixels() public {
-        (uint[] memory x, uint[] memory y,address[]  memory owner, bytes3[] memory color) = colorBlock.getPixels();
+        (uint[] memory pixelIndex, address[] memory owners, bytes3[] memory colors) = colorBlock.getPixels();
 
         uint ownedByTestContract = 0;
-        for (uint i = 0; i < owner.length; i++) {
-            if (owner[i] == address(this)) {
+        for (uint i = 0; i < owners.length; i++) {
+            if (owners[i] == address(this)) {
                 ownedByTestContract++;
             }
+            Assert.equal(pixelIndex[i], i, "pixelIndex should match array indexer");
         }
 
 
