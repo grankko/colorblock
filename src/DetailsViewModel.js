@@ -4,7 +4,7 @@ class DetailsViewModel {
         this.onPixelBought = null;
 
         this.ownerTextBox = document.getElementById('ownerTextBox');
-        this.pixelColorTextBox = document.getElementById('pixelColorTextBox');
+        this.pixelColorPicker = document.getElementById('pixelColorPicker');
         this.buyButton = document.getElementById('buyPixelButton');        
     }
 
@@ -25,7 +25,7 @@ class DetailsViewModel {
 
                 me.context.contracts.ColorBlock.deployed().then(function(instance) {
                     colorBlockInstance = instance;
-                    var newColor = me.pixelColorTextBox.value.replace("#", "0x");
+                    var newColor = me.pixelColorPicker.value.replace("#", "0x");
 
                     // Call contract
                     return colorBlockInstance.assignPixel(me.buyButton.dataset.pixelIndex, newColor, {from: account});
@@ -45,7 +45,7 @@ class DetailsViewModel {
 
     pixelSelected(owner, color, cellIndex) {
         this.ownerTextBox.value = owner;
-        this.pixelColorTextBox.value = color;
+        this.pixelColorPicker.value = color;
         this.buyButton.dataset.pixelIndex = cellIndex;
     }
 }
