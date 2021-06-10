@@ -2,6 +2,7 @@ class GridViewModel {
     constructor(context) {
         this.context = context;
         this.onPixelSelected = null;
+        this.rowCount = null;
 
         this.colorGridContainer = document.getElementById('colorgridContainer');
     }
@@ -17,9 +18,9 @@ class GridViewModel {
         }).then(function(pixels) {
             
             // Calculate size of the grid
-            let rows = Math.sqrt(pixels[0].length);
-            me.colorGridContainer.style.setProperty('--grid-rows', rows);
-            me.colorGridContainer.style.setProperty('--grid-cols', rows);
+            me.rowCount = Math.sqrt(pixels[0].length);
+            me.colorGridContainer.style.setProperty('--grid-rows', me.rowCount);
+            me.colorGridContainer.style.setProperty('--grid-cols', me.rowCount);
             me.colorGridContainer.innerHTML = '';            
   
             // Render grid
@@ -46,11 +47,14 @@ class GridViewModel {
     pixelClicked(event) {
         event.preventDefault();
   
-        var cellIndex = event.target.dataset.pixelIndex;
-        var color = event.target.dataset.color;
-        var owner = event.target.dataset.owner;
+        let cellIndex = event.target.dataset.pixelIndex;
+        let color = event.target.dataset.color;
+        let owner = event.target.dataset.owner;
 
-        this.onPixelSelected(owner, color, cellIndex);
+        let x = (cellIndex % this.rowCount) +1;
+        let y = Math.floor(cellIndex / this.rowCount) +1;
+
+        this.onPixelSelected(owner, color, cellIndex, x, y);
     }
 }
 

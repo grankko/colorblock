@@ -3,14 +3,19 @@ class DetailsViewModel {
         this.context = context;
         this.onPixelBought = null;
 
-        this.ownerTextBox = document.getElementById('ownerTextBox');
+        this.ownerLink = document.getElementById('ownerLink');
         this.pixelColorPicker = document.getElementById('pixelColorPicker');
-        this.buyButton = document.getElementById('buyPixelButton');        
+        this.buyButton = document.getElementById('buyPixelButton');
+        this.bottomPanel = document.getElementById('bottomPanel');
+
+        this.selectedX = document.getElementById('selectedX');
+        this.selectedY = document.getElementById('selectedY');
     }
 
     initView() {
         var me = this;
-        
+        this.bottomPanel.style.visibility = 'collapse';
+
         me.buyButton.addEventListener("click", function(event) {
             event.preventDefault();
       
@@ -43,8 +48,15 @@ class DetailsViewModel {
         });
     }
 
-    pixelSelected(owner, color, cellIndex) {
-        this.ownerTextBox.value = owner;
+    pixelSelected(owner, color, cellIndex, x, y) {
+
+        this.selectedX.innerText = 'X: ' + x;
+        this.selectedY.innerText = 'Y: ' + y;
+
+        this.bottomPanel.style.visibility = 'visible';
+
+        this.ownerLink.innerText = owner;
+        this.ownerLink.href = 'https://etherscan.io/address/' + owner;
         this.pixelColorPicker.value = color;
         this.buyButton.dataset.pixelIndex = cellIndex;
     }

@@ -5,26 +5,6 @@ body, html
 
     margin: 0;
     padding: 0;
-    height: 100vh;    
-}
-
-.top
-{
-    height: 5vh;
-    text-align: center;
-}
-
-.colorgrid
-{
-    height: 45vh;
-    padding: 1em;
-}
-
-.bottom
-{
-    height: 50vh;
-    font-weight: 600;
-    text-align: center;
 }
 
 :root
@@ -32,7 +12,22 @@ body, html
     --grid-cols: 1;
     --grid-rows: 1;
 }
-  
+
+h1 {
+    font-size: 4em;
+}
+
+.top
+{
+    height: 7vh;
+    text-align: center;
+}
+
+.colorgrid
+{
+    padding: 1em;
+}
+
 #colorgridContainer
 {
     width: fit-content;
@@ -43,38 +38,89 @@ body, html
 
     margin-left: auto;
     margin-right: auto;
+
+    padding: 2em;
+
+    border-radius: 2em;
+    border: 0.1em solid #000;
+
+    background-color:honeydew;
 }
   
 .cell
 {
     width: 5em;
     height: 5em;
-    border: 1px solid #999;
     text-align: center;
+    border-radius: 1em;
+    margin: 0.3em;
 }
 
+.cell:hover
+{
+    margin: 0em;
+    border: 0.3em solid #66f;
+    cursor: pointer;
+}
   
+
+.bottom
+{
+    font-weight: 600;
+    text-align: center;
+    visibility: collapse;
+}
+
+input[type=color]
+{
+	width: 5em;
+	height: 5em;
+    border-radius: 1em;
+	border: none;
+	background: none;
+    vertical-align: middle;
+    
+    margin: 1em;
+}
+
+input[type=color]:hover
+{
+    cursor: pointer;    
+}
+
+
+button
+{
+    height: 3em;
+    vertical-align: middle;
+
+    margin: 1em;
+}
+
 /* cyrillic */
-@font-face {
+@font-face
+{
     font-family: 'Poiret One';
     font-style: normal;
     font-weight: 400;
     src: url(/style/UqyVK80NJXN4zfRgbdfbo5pcV_cx.woff2) format('woff2');
     unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-  }
+}
   /* latin-ext */
-  @font-face {
+@font-face
+{
     font-family: 'Poiret One';
     font-style: normal;
     font-weight: 400;
     src: url(/style/UqyVK80NJXN4zfRgbdfbo5BcV_cx.woff2) format('woff2');
     unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-  }
+}
   /* latin */
-  @font-face {
+@font-face
+{
     font-family: 'Poiret One';
     font-style: normal;
     font-weight: 400;
     src: url(/style/UqyVK80NJXN4zfRgbdfbo55cVw.woff2) format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-  }
+}
